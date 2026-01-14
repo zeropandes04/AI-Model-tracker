@@ -532,6 +532,16 @@
             'Instruction Following': ['Instruction Adherence']
         };
 
+        // Helper function to get dimensions for a category
+        function getDimensionsForCategory(categoryName) {
+            // Return predefined dimensions if they exist
+            if (CATEGORY_DIMENSIONS[categoryName]) {
+                return CATEGORY_DIMENSIONS[categoryName];
+            }
+            // Default dimensions for custom categories
+            return ['Accuracy', 'Instruction Adherence'];
+        }
+
         // Data Store
         class TrackerStore {
             constructor() {
@@ -754,7 +764,7 @@
                 <div class="grid">
                     ${store.categories.map(category => {
                         const winner = store.getCategoryWinner(category.id);
-                        const dimensions = CATEGORY_DIMENSIONS[category.name] || [];
+                        const dimensions = getDimensionsForCategory(category.name);
 
                         return `
                             <div class="scorecard">
@@ -816,7 +826,7 @@
 
         function renderCategoryDetail(category) {
             const results = store.getModelResultsForCategory(category.id);
-            const dimensions = CATEGORY_DIMENSIONS[category.name] || [];
+            const dimensions = getDimensionsForCategory(category.name);
 
             return `
                 <button class="btn btn-secondary back-btn" onclick="backToDashboard()">
@@ -919,7 +929,7 @@
             document.getElementById('modelResultModalTitle').textContent = 'Add Model Result';
 
             const category = store.getCategoryById(categoryId);
-            const dimensions = CATEGORY_DIMENSIONS[category.name] || [];
+            const dimensions = getDimensionsForCategory(category.name);
 
             const select = document.getElementById('resultModel');
             select.disabled = false;
@@ -942,7 +952,7 @@
 
             document.getElementById('modelResultModalTitle').textContent = 'Edit Model Result';
 
-            const dimensions = CATEGORY_DIMENSIONS[category.name] || [];
+            const dimensions = getDimensionsForCategory(category.name);
             const select = document.getElementById('resultModel');
             select.disabled = true;
             select.innerHTML = store.availableModels
@@ -1023,7 +1033,7 @@
                 return;
             }
 
-            const dimensions = CATEGORY_DIMENSIONS[selectedCategory.name] || [];
+            const dimensions = getDimensionsForCategory(selectedCategory.name);
             if (Object.keys(currentDimensionScores).length !== dimensions.length) {
                 alert('Please rate all dimensions');
                 return;
