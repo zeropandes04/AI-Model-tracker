@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            margin-bottom: 2rem;
+        }
+
+        .tabs-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            max-width: 28rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-trigger {
+            padding: 0.75rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .tab-trigger:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .tab-trigger.active {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-small {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 2rem;
+            height: 2rem;
+        }
+
+        /* Category Card */
+        .category-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .winner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--success);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+
+        .score-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .score-item:last-child {
+            border-bottom: none;
+        }
+
+        .score-value {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Back Button */
+        .back-btn {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .prompt-section {
+            margin-top: 2rem;
+        }
+
+        .prompt-card {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon {
+            width: 1rem;
+            height: 1rem;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- Content will be rendered here by JavaScript -->
+    </div>
+
+    <!-- Add Category Modal -->
+    <div id="addCategoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Category</h2>
+                <button class="modal-close" onclick="closeModal('addCategoryModal')">&times;</button>
+            </div>
+            <form id="addCategoryForm">
+                <div class="form-group">
+                    <label>Category Name</label>
+                    <input type="text" id="categoryName" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="categoryDescription" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Category</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Prompt Modal -->
+    <div id="addPromptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Prompt</h2>
+                <button class="modal-close" onclick="closeModal('addPromptModal')">&times;</button>
+            </div>
+            <form id="addPromptForm">
+                <div class="form-group">
+                    <label>Prompt Text</label>
+                    <textarea id="promptText" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Prompt</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Result Modal -->
+    <div id="addResultModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Result</h2>
+                <button class="modal-close" onclick="closeModal('addResultModal')">&times;</button>
+            </div>
+            <form id="addResultForm">
+                <div class="form-group">
+                    <label>Model</label>
+                    <select id="resultModel" required>
+                        <option value="">Select a model...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Score (1-10)</label>
+                    <input type="number" id="resultScore" min="1" max="10" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="resultNotes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Result</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // SVG Icons as strings
+        const icons = {
+            trophy: '<svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>',
+            list: '<svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',
+            arrowLeft: '<svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+            plus: '<svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>',
+            edit: '<svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>',
+            trash: '<svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>'
+        };
+
+        // Data Store
+        class TrackerStore {
+            constructor() {
+                this.models = [
+                    { id: '1', name: 'GPT-4', provider: 'OpenAI' },
+                    { id: '2', name: 'Claude 3.5 Sonnet', provider: 'Anthropic' },
+                    { id: '3', name: 'Gemini Pro', provider: 'Google' },
+                    { id: '4', name: 'Llama 3', provider: 'Meta' }
+                ];
+                this.categories = [];
+                this.prompts = [];
+                this.results = [];
+                this.loadData();
+            }
+
+            loadData() {
+                const stored = localStorage.getItem('trackerData');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    this.categories = data.categories || [];
+                    this.prompts = data.prompts || [];
+                    this.results = data.results || [];
+                } else {
+                    // Sample data
+                    this.categories = [
+                        { id: '1', name: 'Code Generation', description: 'Testing code generation capabilities' },
+                        { id: '2', name: 'Creative Writing', description: 'Evaluating creative writing skills' }
+                    ];
+                    this.prompts = [
+                        { id: '1', categoryId: '1', text: 'Write a Python function to calculate fibonacci numbers' },
+                        { id: '2', categoryId: '2', text: 'Write a short story about a robot learning to paint' }
+                    ];
+                    this.results = [
+                        { id: '1', promptId: '1', modelId: '1', score: 9, notes: 'Excellent implementation' },
+                        { id: '2', promptId: '1', modelId: '2', score: 8.5, notes: 'Good code quality' },
+                        { id: '3', promptId: '2', modelId: '2', score: 9.5, notes: 'Very creative' }
+                    ];
+                    this.saveData();
+                }
+            }
+
+            saveData() {
+                localStorage.setItem('trackerData', JSON.stringify({
+                    categories: this.categories,
+                    prompts: this.prompts,
+                    results: this.results
+                }));
+            }
+
+            addCategory(name, description) {
+                const category = {
+                    id: Date.now().toString(),
+                    name,
+                    description
+                };
+                this.categories.push(category);
+                this.saveData();
+                return category;
+            }
+
+            deleteCategory(id) {
+                this.categories = this.categories.filter(c => c.id !== id);
+                this.prompts = this.prompts.filter(p => p.categoryId !== id);
+                this.saveData();
+            }
+
+            addPrompt(categoryId, text) {
+                const prompt = {
+                    id: Date.now().toString(),
+                    categoryId,
+                    text
+                };
+                this.prompts.push(prompt);
+                this.saveData();
+                return prompt;
+            }
+
+            deletePrompt(id) {
+                this.prompts = this.prompts.filter(p => p.id !== id);
+                this.results = this.results.filter(r => r.promptId !== id);
+                this.saveData();
+            }
+
+            addResult(promptId, modelId, score, notes) {
+                const result = {
+                    id: Date.now().toString(),
+                    promptId,
+                    modelId,
+                    score: parseFloat(score),
+                    notes
+                };
+                this.results.push(result);
+                this.saveData();
+                return result;
+            }
+
+            getPromptsForCategory(categoryId) {
+                return this.prompts.filter(p => p.categoryId === categoryId);
+            }
+
+            getResultsForPrompt(promptId) {
+                return this.results.filter(r => r.promptId === promptId);
+            }
+
+            getModelScoresForCategory(categoryId) {
+                const prompts = this.getPromptsForCategory(categoryId);
+                const scores = {};
+
+                this.models.forEach(model => {
+                    let total = 0;
+                    let count = 0;
+                    prompts.forEach(prompt => {
+                        const results = this.getResultsForPrompt(prompt.id);
+                        const modelResult = results.find(r => r.modelId === model.id);
+                        if (modelResult) {
+                            total += modelResult.score;
+                            count++;
+                        }
+                    });
+                    scores[model.id] = count > 0 ? (total / count).toFixed(1) : null;
+                });
+
+                return scores;
+            }
+
+            getCategoryWinner(categoryId) {
+                const scores = this.getModelScoresForCategory(categoryId);
+                let winner = null;
+                let highestScore = 0;
+
+                Object.entries(scores).forEach(([modelId, score]) => {
+                    if (score && parseFloat(score) > highestScore) {
+                        highestScore = parseFloat(score);
+                        winner = this.models.find(m => m.id === modelId);
+                    }
+                });
+
+                return winner ? { model: winner, score: highestScore } : null;
+            }
+        }
+
+        // App State
+        const store = new TrackerStore();
+        let currentView = 'dashboard';
+        let currentTab = 'best';
+        let selectedCategory = null;
+        let currentPromptId = null;
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Render Functions
+        function render() {
+            const app = document.getElementById('app');
+
+            if (currentView === 'category-detail' && selectedCategory) {
+                app.innerHTML = renderCategoryDetail(selectedCategory);
+            } else {
+                app.innerHTML = renderMainView();
+            }
+        }
+
+        function renderMainView() {
+            return `
+                <div class="tabs">
+                    <div class="tabs-list">
+                        <button class="tab-trigger ${currentTab === 'best' ? 'active' : ''}" onclick="switchTab('best')">
+                            ${icons.trophy}
+                            Best by Category
+                        </button>
+                        <button class="tab-trigger ${currentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+                            ${icons.list}
+                            All Results
+                        </button>
+                    </div>
+
+                    <div class="tab-content ${currentTab === 'best' ? 'active' : ''}">
+                        ${renderDashboard()}
+                    </div>
+
+                    <div class="tab-content ${currentTab === 'all' ? 'active' : ''}">
+                        ${renderAllResults()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDashboard() {
+            if (store.categories.length === 0) {
+                return `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">${icons.list}</div>
+                        <h3>No categories yet</h3>
+                        <p>Get started by adding your first category</p>
+                        <button class="btn btn-primary" onclick="openModal('addCategoryModal')" style="margin-top: 1rem;">
+                            ${icons.plus}
+                            Add Category
+                        </button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Categories</h2>
+                        <button class="btn btn-primary" onclick="openModal('addCategoryModal')">
+                            ${icons.plus}
+                            Add Category
+                        </button>
+                    </div>
+                    <div class="grid">
+                        ${store.categories.map(category => {
+                            const winner = store.getCategoryWinner(category.id);
+                            return `
+                                <div class="card category-card" onclick="viewCategory('${category.id}')">
+                                    <h3>${category.name}</h3>
+                                    <p style="color: var(--text-secondary); font-size: 0.875rem;">${category.description || ''}</p>
+                                    ${winner ? `
+                                        <div class="winner-badge">
+                                            ${icons.trophy}
+                                            ${winner.model.name} - ${winner.score}
+                                        </div>
+                                    ` : '<p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.875rem;">No results yet</p>'}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAllResults() {
+            if (store.categories.length === 0) {
+                return `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">${icons.list}</div>
+                        <h3>No data to display</h3>
+                        <p>Add categories and prompts to see results here</p>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">All Results</h2>
+                    </div>
+                    ${store.categories.map(category => {
+                        const scores = store.getModelScoresForCategory(category.id);
+                        return `
+                            <div style="margin-bottom: 2rem;">
+                                <h3>${category.name}</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Model</th>
+                                            <th>Provider</th>
+                                            <th>Average Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${store.models.map(model => `
+                                            <tr>
+                                                <td>${model.name}</td>
+                                                <td style="color: var(--text-secondary);">${model.provider}</td>
+                                                <td><span class="score-value">${scores[model.id] || 'N/A'}</span></td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function renderCategoryDetail(category) {
+            const scores = store.getModelScoresForCategory(category.id);
+            const prompts = store.getPromptsForCategory(category.id);
+
+            return `
+                <button class="btn btn-secondary back-btn" onclick="backToDashboard()">
+                    ${icons.arrowLeft}
+                    Back
+                </button>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h1 class="card-title">${category.name}</h1>
+                            <p style="color: var(--text-secondary);">${category.description || ''}</p>
+                        </div>
+                        <button class="btn btn-danger btn-small" onclick="deleteCategory('${category.id}')">
+                            ${icons.trash}
+                            Delete
+                        </button>
+                    </div>
+
+                    <h3>Model Scores</h3>
+                    <ul class="score-list">
+                        ${store.models.map(model => `
+                            <li class="score-item">
+                                <span>${model.name} <span style="color: var(--text-muted); font-size: 0.875rem;">(${model.provider})</span></span>
+                                <span class="score-value">${scores[model.id] || 'N/A'}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Prompts</h2>
+                        <button class="btn btn-primary" onclick="openAddPromptModal('${category.id}')">
+                            ${icons.plus}
+                            Add Prompt
+                        </button>
+                    </div>
+
+                    ${prompts.length === 0 ? `
+                        <div class="empty-state">
+                            <p>No prompts yet. Add a prompt to start evaluating models.</p>
+                        </div>
+                    ` : prompts.map(prompt => {
+                        const results = store.getResultsForPrompt(prompt.id);
+                        return `
+                            <div class="prompt-card">
+                                <div class="prompt-header">
+                                    <h4>Prompt</h4>
+                                    <div>
+                                        <button class="btn btn-primary btn-small" onclick="openAddResultModal('${prompt.id}')">
+                                            ${icons.plus}
+                                            Add Result
+                                        </button>
+                                        <button class="btn btn-danger btn-small" onclick="deletePrompt('${prompt.id}')" style="margin-left: 0.5rem;">
+                                            ${icons.trash}
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="prompt-text">${prompt.text}</p>
+
+                                ${results.length > 0 ? `
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Model</th>
+                                                <th>Score</th>
+                                                <th>Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${results.map(result => {
+                                                const model = store.models.find(m => m.id === result.modelId);
+                                                return `
+                                                    <tr>
+                                                        <td>${model ? model.name : 'Unknown'}</td>
+                                                        <td><span class="score-value">${result.score}</span></td>
+                                                        <td style="color: var(--text-secondary); font-size: 0.875rem;">${result.notes || '-'}</td>
+                                                    </tr>
+                                                `;
+                                            }).join('')}
+                                        </tbody>
+                                    </table>
+                                ` : '<p style="color: var(--text-muted); font-size: 0.875rem;">No results yet</p>'}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // Event Handlers
+        function switchTab(tab) {
+            currentTab = tab;
+            render();
+        }
+
+        function viewCategory(categoryId) {
+            selectedCategory = store.categories.find(c => c.id === categoryId);
+            currentView = 'category-detail';
+            render();
+        }
+
+        function backToDashboard() {
+            currentView = 'dashboard';
+            selectedCategory = null;
+            render();
+        }
+
+        function deleteCategory(categoryId) {
+            if (confirm('Are you sure you want to delete this category? This will also delete all associated prompts and results.')) {
+                store.deleteCategory(categoryId);
+                backToDashboard();
+            }
+        }
+
+        function deletePrompt(promptId) {
+            if (confirm('Are you sure you want to delete this prompt and all its results?')) {
+                store.deletePrompt(promptId);
+                render();
+            }
+        }
+
+        function openAddPromptModal(categoryId) {
+            selectedCategory = store.categories.find(c => c.id === categoryId);
+            openModal('addPromptModal');
+        }
+
+        function openAddResultModal(promptId) {
+            currentPromptId = promptId;
+            const select = document.getElementById('resultModel');
+            select.innerHTML = '<option value="">Select a model...</option>' +
+                store.models.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+            openModal('addResultModal');
+        }
+
+        // Form Handlers
+        document.getElementById('addCategoryForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('categoryName').value;
+            const description = document.getElementById('categoryDescription').value;
+            store.addCategory(name, description);
+            closeModal('addCategoryModal');
+            document.getElementById('addCategoryForm').reset();
+            render();
+        });
+
+        document.getElementById('addPromptForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = document.getElementById('promptText').value;
+            store.addPrompt(selectedCategory.id, text);
+            closeModal('addPromptModal');
+            document.getElementById('addPromptForm').reset();
+            render();
+        });
+
+        document.getElementById('addResultForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const modelId = document.getElementById('resultModel').value;
+            const score = document.getElementById('resultScore').value;
+            const notes = document.getElementById('resultNotes').value;
+            store.addResult(currentPromptId, modelId, score, notes);
+            closeModal('addResultModal');
+            document.getElementById('addResultForm').reset();
+            render();
+        });
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>
