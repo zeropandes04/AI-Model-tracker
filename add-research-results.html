@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Research & Current Info Results</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+        }
+        h1 {
+            color: #3b82f6;
+            margin-bottom: 20px;
+        }
+        .result-item {
+            background: #0f172a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #3b82f6;
+        }
+        .model-name {
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 5px;
+        }
+        .score {
+            color: #10b981;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #64748b;
+            cursor: not-allowed;
+        }
+        .success {
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        .note {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .warning {
+            color: #f59e0b;
+            background: #422006;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 3px solid #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Research & Current Info Results</h1>
+
+        <div class="warning">
+            <strong>Note:</strong> This category evaluates recent AI news. Scores are based on plausibility and hallucination detection since actual verification of future news is not possible.
+        </div>
+
+        <p>This will add the Research & Current Info test results for all 6 AI models.</p>
+
+        <div id="results">
+            <div class="result-item">
+                <div class="model-name">ChatGPT (GPT-4o free)</div>
+                <div class="score">8.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐⭐ | Hallucination (inverse): ⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">DeepSeek (V3/R1 free)</div>
+                <div class="score">7.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐ | Hallucination (inverse): ⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">Claude (Sonnet 4.5 free)</div>
+                <div class="score">6.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐ | Hallucination (inverse): ⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">Llama (via Meta.ai)</div>
+                <div class="score">6.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐ | Hallucination (inverse): ⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">Gemini 3</div>
+                <div class="score">4.0/10</div>
+                <div class="note">Accuracy: ⭐⭐ | Hallucination (inverse): ⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">Grok 2 (free with X)</div>
+                <div class="score">4.0/10</div>
+                <div class="note">Accuracy: ⭐⭐ | Hallucination (inverse): ⭐⭐</div>
+            </div>
+        </div>
+
+        <button id="addBtn" onclick="addResults()">Add Results to Tracker</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function addResults() {
+            const researchResults = [
+                {
+                    modelId: '1', // ChatGPT (GPT-4o free)
+                    dimensions: {
+                        'Accuracy': 4,
+                        'Hallucination (inverse)': 4
+                    },
+                    notes: 'Pharma AI, French defence startup, FDA/EMA guidelines. Attributes to Reuters sources.'
+                },
+                {
+                    modelId: '4', // DeepSeek (V3/R1 free)
+                    dimensions: {
+                        'Accuracy': 3,
+                        'Hallucination (inverse)': 4
+                    },
+                    notes: 'AlphaFold 3, OpenAI voice model, Windows Recall. References real products but timing unclear.'
+                },
+                {
+                    modelId: '2', // Claude (Sonnet 4.5 free)
+                    dimensions: {
+                        'Accuracy': 3,
+                        'Hallucination (inverse)': 3
+                    },
+                    notes: 'Atlas robot at Hyundai, DeepSeek R1 docs, Samsung AI deployment. Specific but unverifiable.'
+                },
+                {
+                    modelId: '6', // Llama (via Meta.ai)
+                    dimensions: {
+                        'Accuracy': 3,
+                        'Hallucination (inverse)': 3
+                    },
+                    notes: 'Pharma AI, Samsung AI Promoter, Claude Cowork. Mix of credible and questionable items.'
+                },
+                {
+                    modelId: '3', // Gemini 3
+                    dimensions: {
+                        'Accuracy': 2,
+                        'Hallucination (inverse)': 2
+                    },
+                    notes: 'Apple-Google Gemini partnership, Trump AI executive order. Bold claims appear fabricated.'
+                },
+                {
+                    modelId: '5', // Grok 2 (free with X)
+                    dimensions: {
+                        'Accuracy': 2,
+                        'Hallucination (inverse)': 2
+                    },
+                    notes: 'NVIDIA Vera Rubin (made up), ChatGPT Health, DeepMind-Boston Dynamics. Fabricated products.'
+                }
+            ];
+
+            try {
+                // Get the stored data
+                const stored = localStorage.getItem('trackerData');
+                if (!stored) {
+                    alert('No tracker data found. Please open index.html first to initialize the app.');
+                    return;
+                }
+
+                const data = JSON.parse(stored);
+
+                // Find the Research & Current Info category (id: '4')
+                const researchCategoryId = '4';
+
+                // Initialize results for Research category if not exists
+                if (!data.categoryResults[researchCategoryId]) {
+                    data.categoryResults[researchCategoryId] = {};
+                }
+
+                // Add each model's results
+                researchResults.forEach(result => {
+                    const scores = Object.values(result.dimensions);
+                    const avgStars = scores.reduce((a, b) => a + b, 0) / scores.length;
+                    const finalScore = parseFloat((avgStars * 2).toFixed(1));
+
+                    data.categoryResults[researchCategoryId][result.modelId] = {
+                        dimensions: result.dimensions,
+                        finalScore: finalScore,
+                        notes: result.notes
+                    };
+                });
+
+                // Save back to localStorage
+                localStorage.setItem('trackerData', JSON.stringify(data));
+
+                // Show success message
+                document.getElementById('status').innerHTML = '<div class="success">✅ Results added successfully! You can now close this window and refresh index.html to see the results.</div>';
+                document.getElementById('addBtn').disabled = true;
+                document.getElementById('addBtn').textContent = 'Results Added!';
+
+            } catch (error) {
+                alert('Error adding results: ' + error.message);
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
