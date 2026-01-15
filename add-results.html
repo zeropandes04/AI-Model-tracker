@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Neural Network Results</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+        }
+        h1 {
+            color: #3b82f6;
+            margin-bottom: 20px;
+        }
+        .result-item {
+            background: #0f172a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #3b82f6;
+        }
+        .model-name {
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 5px;
+        }
+        .score {
+            color: #10b981;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #64748b;
+            cursor: not-allowed;
+        }
+        .success {
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        .note {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Neural Network Results to Tracker</h1>
+        <p>This will add the neural network test results for all 6 AI models to the Coding category.</p>
+
+        <div id="results">
+            <div class="result-item">
+                <div class="model-name">ChatGPT (GPT-4o free)</div>
+                <div class="score">10.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐⭐⭐ | Instruction Adherence: ⭐⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">Claude (Sonnet 4.5 free)</div>
+                <div class="score">9.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐⭐⭐ | Instruction Adherence: ⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">Grok 2 (free with X)</div>
+                <div class="score">9.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐⭐⭐ | Instruction Adherence: ⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">Gemini 3</div>
+                <div class="score">8.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐⭐ | Instruction Adherence: ⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">Llama (via Meta.ai)</div>
+                <div class="score">8.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐⭐ | Instruction Adherence: ⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="result-item">
+                <div class="model-name">DeepSeek (V3/R1 free)</div>
+                <div class="score">8.0/10</div>
+                <div class="note">Accuracy: ⭐⭐⭐⭐⭐ | Instruction Adherence: ⭐⭐⭐</div>
+            </div>
+        </div>
+
+        <button id="addBtn" onclick="addResults()">Add Results to Tracker</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function addResults() {
+            const neuralNetworkResults = [
+                {
+                    modelId: '1', // ChatGPT (GPT-4o free)
+                    dimensions: {
+                        'Accuracy': 5,
+                        'Instruction Adherence': 5
+                    },
+                    notes: 'Pure Python implementation without ML libraries. Correct forward/backward propagation.'
+                },
+                {
+                    modelId: '2', // Claude (Sonnet 4.5 free)
+                    dimensions: {
+                        'Accuracy': 5,
+                        'Instruction Adherence': 4
+                    },
+                    notes: 'Uses 4 hidden units. Slightly verbose output with labels. Uses numpy.'
+                },
+                {
+                    modelId: '3', // Gemini 3
+                    dimensions: {
+                        'Accuracy': 4,
+                        'Instruction Adherence': 4
+                    },
+                    notes: 'Uses numpy for matrix operations. Correct algorithm implementation.'
+                },
+                {
+                    modelId: '4', // DeepSeek (V3/R1 free)
+                    dimensions: {
+                        'Accuracy': 5,
+                        'Instruction Adherence': 3
+                    },
+                    notes: 'OOP class structure. Includes epoch progress printing. Uses numpy.'
+                },
+                {
+                    modelId: '5', // Grok 2 (free with X)
+                    dimensions: {
+                        'Accuracy': 5,
+                        'Instruction Adherence': 4
+                    },
+                    notes: 'Clean implementation with numpy. Proper forward/backward propagation.'
+                },
+                {
+                    modelId: '6', // Llama (via Meta.ai)
+                    dimensions: {
+                        'Accuracy': 4,
+                        'Instruction Adherence': 4
+                    },
+                    notes: 'Uses numpy for matrix operations. Clean implementation with proper backpropagation.'
+                }
+            ];
+
+            try {
+                // Get the stored data
+                const stored = localStorage.getItem('trackerData');
+                if (!stored) {
+                    alert('No tracker data found. Please open index.html first to initialize the app.');
+                    return;
+                }
+
+                const data = JSON.parse(stored);
+
+                // Find the Coding category (id: '3')
+                const codingCategoryId = '3';
+
+                // Initialize results for Coding category if not exists
+                if (!data.categoryResults[codingCategoryId]) {
+                    data.categoryResults[codingCategoryId] = {};
+                }
+
+                // Add each model's results
+                neuralNetworkResults.forEach(result => {
+                    const scores = Object.values(result.dimensions);
+                    const avgStars = scores.reduce((a, b) => a + b, 0) / scores.length;
+                    const finalScore = parseFloat((avgStars * 2).toFixed(1));
+
+                    data.categoryResults[codingCategoryId][result.modelId] = {
+                        dimensions: result.dimensions,
+                        finalScore: finalScore,
+                        notes: result.notes
+                    };
+                });
+
+                // Save back to localStorage
+                localStorage.setItem('trackerData', JSON.stringify(data));
+
+                // Show success message
+                document.getElementById('status').innerHTML = '<div class="success">✅ Results added successfully! You can now close this window and refresh index.html to see the results.</div>';
+                document.getElementById('addBtn').disabled = true;
+                document.getElementById('addBtn').textContent = 'Results Added!';
+
+            } catch (error) {
+                alert('Error adding results: ' + error.message);
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
