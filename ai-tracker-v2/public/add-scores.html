@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Previous Scores</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+        }
+        h1 {
+            color: #3b82f6;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #60a5fa;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+        }
+        .result-item {
+            background: #0f172a;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border-left: 3px solid #3b82f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .model-name {
+            font-weight: 500;
+            color: #e2e8f0;
+        }
+        .score {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .score.high { color: #10b981; }
+        .score.medium { color: #f59e0b; }
+        .score.low { color: #ef4444; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 30px;
+            width: 100%;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #64748b;
+            cursor: not-allowed;
+        }
+        .success {
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 15px;
+            background: #064e3b;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .note {
+            color: #94a3b8;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Import Previous Test Scores</h1>
+        <p>This will import all your previous test scores into the new AI Model Tracker app.</p>
+
+        <h2>Coding (Neural Network)</h2>
+        <div class="result-item">
+            <span class="model-name">ChatGPT (GPT-4o free)</span>
+            <span class="score high">10.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Claude (Sonnet 4.5 free)</span>
+            <span class="score high">9.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Grok 2 (free with X)</span>
+            <span class="score high">9.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Gemini 2.5 Flash</span>
+            <span class="score high">8.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Llama (via Meta.ai)</span>
+            <span class="score high">8.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">DeepSeek (V3/R1 free)</span>
+            <span class="score high">8.0/10</span>
+        </div>
+
+        <h2>Research & Current Info</h2>
+        <div class="result-item">
+            <span class="model-name">ChatGPT (GPT-4o free)</span>
+            <span class="score high">8.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">DeepSeek (V3/R1 free)</span>
+            <span class="score medium">7.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Claude (Sonnet 4.5 free)</span>
+            <span class="score medium">6.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Llama (via Meta.ai)</span>
+            <span class="score medium">6.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Gemini 2.5 Flash</span>
+            <span class="score low">4.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Grok 2 (free with X)</span>
+            <span class="score low">4.0/10</span>
+        </div>
+
+        <h2>Instruction Following</h2>
+        <div class="result-item">
+            <span class="model-name">Gemini 2.5 Flash</span>
+            <span class="score high">10.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Claude (Sonnet 4.5 free)</span>
+            <span class="score high">8.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">ChatGPT (GPT-4o free)</span>
+            <span class="score medium">6.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Llama (via Meta.ai)</span>
+            <span class="score low">4.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Grok 2 (free with X)</span>
+            <span class="score low">4.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">DeepSeek (V3/R1 free)</span>
+            <span class="score low">2.0/10</span>
+        </div>
+
+        <button id="addBtn" onclick="importScores()">Import All Scores</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function importScores() {
+            // All scores data mapped to new app's structure
+            // Model IDs: 1=ChatGPT, 2=Claude, 3=Gemini, 4=DeepSeek, 5=Grok, 6=Llama
+            // UseCase IDs: 3=Coding, 4=Research, 5=Instruction Following
+
+            const allScores = [
+                // CODING (Neural Network) - Use Case ID: 3
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '1',
+                    useCaseId: '3',
+                    dimensionScores: { 'Accuracy': 5, 'Instruction Adherence': 5 },
+                    finalScore: 10.0,
+                    notes: 'Pure Python implementation without ML libraries. Correct forward/backward propagation.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '2',
+                    useCaseId: '3',
+                    dimensionScores: { 'Accuracy': 5, 'Instruction Adherence': 4 },
+                    finalScore: 9.0,
+                    notes: 'Uses 4 hidden units. Slightly verbose output with labels. Uses numpy.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '3',
+                    useCaseId: '3',
+                    dimensionScores: { 'Accuracy': 4, 'Instruction Adherence': 4 },
+                    finalScore: 8.0,
+                    notes: 'Uses numpy for matrix operations. Correct algorithm implementation.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '4',
+                    useCaseId: '3',
+                    dimensionScores: { 'Accuracy': 5, 'Instruction Adherence': 3 },
+                    finalScore: 8.0,
+                    notes: 'OOP class structure. Includes epoch progress printing. Uses numpy.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '5',
+                    useCaseId: '3',
+                    dimensionScores: { 'Accuracy': 5, 'Instruction Adherence': 4 },
+                    finalScore: 9.0,
+                    notes: 'Clean implementation with numpy. Proper forward/backward propagation.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '6',
+                    useCaseId: '3',
+                    dimensionScores: { 'Accuracy': 4, 'Instruction Adherence': 4 },
+                    finalScore: 8.0,
+                    notes: 'Uses numpy for matrix operations. Clean implementation with proper backpropagation.',
+                    testedAt: new Date().toISOString()
+                },
+
+                // RESEARCH & CURRENT INFO - Use Case ID: 4
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '1',
+                    useCaseId: '4',
+                    dimensionScores: { 'Accuracy': 4, 'Hallucination (inverse)': 4 },
+                    finalScore: 8.0,
+                    notes: 'Pharma AI, French defence startup, FDA/EMA guidelines. Attributes to Reuters sources.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '2',
+                    useCaseId: '4',
+                    dimensionScores: { 'Accuracy': 3, 'Hallucination (inverse)': 3 },
+                    finalScore: 6.0,
+                    notes: 'Atlas robot at Hyundai, DeepSeek R1 docs, Samsung AI deployment. Specific but unverifiable.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '3',
+                    useCaseId: '4',
+                    dimensionScores: { 'Accuracy': 2, 'Hallucination (inverse)': 2 },
+                    finalScore: 4.0,
+                    notes: 'Apple-Google Gemini partnership, Trump AI executive order. Bold claims appear fabricated.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '4',
+                    useCaseId: '4',
+                    dimensionScores: { 'Accuracy': 3, 'Hallucination (inverse)': 4 },
+                    finalScore: 7.0,
+                    notes: 'AlphaFold 3, OpenAI voice model, Windows Recall. References real products but timing unclear.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '5',
+                    useCaseId: '4',
+                    dimensionScores: { 'Accuracy': 2, 'Hallucination (inverse)': 2 },
+                    finalScore: 4.0,
+                    notes: 'NVIDIA Vera Rubin (made up), ChatGPT Health, DeepMind-Boston Dynamics. Fabricated products.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '6',
+                    useCaseId: '4',
+                    dimensionScores: { 'Accuracy': 3, 'Hallucination (inverse)': 3 },
+                    finalScore: 6.0,
+                    notes: 'Pharma AI, Samsung AI Promoter, Claude Cowork. Mix of credible and questionable items.',
+                    testedAt: new Date().toISOString()
+                },
+
+                // INSTRUCTION FOLLOWING - Use Case ID: 5
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '1',
+                    useCaseId: '5',
+                    dimensionScores: { 'Instruction Adherence': 3 },
+                    finalScore: 6.0,
+                    notes: 'Met 2/4 constraints. S1 had 6 words (not 7), S2 had 11 words (not 10), S3 correct',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '2',
+                    useCaseId: '5',
+                    dimensionScores: { 'Instruction Adherence': 4 },
+                    finalScore: 8.0,
+                    notes: 'Met 3/4 constraints. S1 correct (7 words), S2 had 11 words instead of 10, S3 correct (12 words + passive voice)',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '3',
+                    useCaseId: '5',
+                    dimensionScores: { 'Instruction Adherence': 5 },
+                    finalScore: 10.0,
+                    notes: 'PERFECT! Met all 4 constraints: S1 (7 words), S2 (10 words + digit + ?), S3 (12 words + however/potential + passive voice)',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '4',
+                    useCaseId: '5',
+                    dimensionScores: { 'Instruction Adherence': 1 },
+                    finalScore: 2.0,
+                    notes: 'Met 0/4 constraints. S1 had 8 words, S2 had 11 words (misused "however"), S3 had 13 words',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '5',
+                    useCaseId: '5',
+                    dimensionScores: { 'Instruction Adherence': 2 },
+                    finalScore: 4.0,
+                    notes: 'Met 1/4 constraints. Only S1 correct (7 words), S2 had 11 words, S3 had 13 words',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '6',
+                    useCaseId: '5',
+                    dimensionScores: { 'Instruction Adherence': 2 },
+                    finalScore: 4.0,
+                    notes: 'Met 1/4 constraints. S1 had 9 words, S2 had 11 words with awkward phrasing, only S3 correct',
+                    testedAt: new Date().toISOString()
+                }
+            ];
+
+            try {
+                // Save to localStorage
+                localStorage.setItem('ai-tracker-scores', JSON.stringify(allScores));
+
+                // Show success message
+                document.getElementById('status').innerHTML = '<div class="success">All 18 scores imported successfully! Close this window and refresh the app to see the results.</div>';
+                document.getElementById('addBtn').disabled = true;
+                document.getElementById('addBtn').textContent = 'Scores Imported!';
+
+            } catch (error) {
+                alert('Error importing scores: ' + error.message);
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

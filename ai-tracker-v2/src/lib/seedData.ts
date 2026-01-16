@@ -46,9 +46,15 @@ export const seedUseCases: UseCase[] = [
   {
     id: '1',
     categoryId: '1',
-    name: 'Firm payment reminder email',
-    prompt: `Write a polite but firm email to a client telling them we are pausing their project because they haven't paid their invoice for 3 months. Do not use the words 'regret,' 'unfortunately,' 'sincerely,' or 'delve.' Keep it under 100 words. Tone: Professional but cold.`,
-    evaluationCriteria: "Did it avoid the forbidden words? Does it sound human or robotic?"
+    name: 'Product Strategy Memo',
+    prompt: `You are a Senior Product Manager writing a strategy memo for the executive team.
+
+Context: Product: A subscription-based B2B SaaS platform. Problem: Growth has stalled for 3 consecutive quarters. Constraint: Engineering capacity is fully allocated for the next 2 quarters. Risk: A major enterprise customer represents 18% of ARR and has threatened to churn.
+
+Task: Write a one-page product strategy memo that: Clearly states a point of view on what should be done next (do not hedge). Explains why this is the right decision now, using product reasoning rather than market buzzwords. Explicitly rejects at least one tempting alternative strategy and explains why it is wrong. Aligns short-term actions with a long-term product vision.
+
+Writing constraints: Max 350 words. No bullet points. No clichés (e.g. "north star", "low-hanging fruit", "move the needle"). Do not mention competitors. Tone: Calm, authoritative, and slightly skeptical. Assume the audience is experienced and impatient.`,
+    evaluationCriteria: "Clarity of reasoning matters more than optimism. Check: word count ≤350, no bullets, no clichés, clear POV, rejects alternative, product reasoning."
   },
   {
     id: '2',
