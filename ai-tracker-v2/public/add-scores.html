@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import Previous Scores</title>
+    <title>Import All Test Scores</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -87,8 +87,34 @@
 </head>
 <body>
     <div class="container">
-        <h1>Import Previous Test Scores</h1>
-        <p>This will import all your previous test scores into the new AI Model Tracker app.</p>
+        <h1>Import All Test Scores</h1>
+        <p>This will import all test scores into the AI Model Tracker app (24 total scores across 4 categories).</p>
+
+        <h2>Writing & Tone (Product Strategy Memo)</h2>
+        <div class="result-item">
+            <span class="model-name">DeepSeek (V3/R1 free)</span>
+            <span class="score high">9.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Claude (Sonnet 4.5 free)</span>
+            <span class="score high">9.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Gemini 2.5 Flash</span>
+            <span class="score high">8.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">ChatGPT (GPT-4o free)</span>
+            <span class="score medium">7.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Grok 2 (free with X)</span>
+            <span class="score medium">7.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Llama (via Meta.ai)</span>
+            <span class="score medium">5.0/10</span>
+        </div>
 
         <h2>Coding (Neural Network)</h2>
         <div class="result-item">
@@ -168,7 +194,7 @@
             <span class="score low">2.0/10</span>
         </div>
 
-        <button id="addBtn" onclick="importScores()">Import All Scores</button>
+        <button id="addBtn" onclick="importScores()">Import All 24 Scores</button>
         <div id="status"></div>
     </div>
 
@@ -176,9 +202,65 @@
         function importScores() {
             // All scores data mapped to new app's structure
             // Model IDs: 1=ChatGPT, 2=Claude, 3=Gemini, 4=DeepSeek, 5=Grok, 6=Llama
-            // UseCase IDs: 3=Coding, 4=Research, 5=Instruction Following
+            // UseCase IDs: 1=Writing&Tone, 3=Coding, 4=Research, 5=Instruction Following
 
             const allScores = [
+                // WRITING & TONE (Product Strategy Memo) - Use Case ID: 1
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '1',
+                    useCaseId: '1',
+                    dimensionScores: { 'Style/Tone': 4, 'Instruction Adherence': 3 },
+                    finalScore: 7.0,
+                    notes: 'Over word limit (~380 words). Strong reasoning but violated constraint. Appropriate tone.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '2',
+                    useCaseId: '1',
+                    dimensionScores: { 'Style/Tone': 5, 'Instruction Adherence': 4 },
+                    finalScore: 9.0,
+                    notes: 'Excellent. Within word limit, no clichés, clear POV on adoption vs features. Uses data (40% unused seats). Strong rejection of feature acceleration.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '3',
+                    useCaseId: '1',
+                    dimensionScores: { 'Style/Tone': 4, 'Instruction Adherence': 4 },
+                    finalScore: 8.0,
+                    notes: 'Strong content but closing question undermines authority. Good rejection of alternative.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '4',
+                    useCaseId: '1',
+                    dimensionScores: { 'Style/Tone': 5, 'Instruction Adherence': 4 },
+                    finalScore: 9.0,
+                    notes: 'Cleanest execution, no constraint violations, strong reasoning. Best overall.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '5',
+                    useCaseId: '1',
+                    dimensionScores: { 'Style/Tone': 4, 'Instruction Adherence': 3 },
+                    finalScore: 7.0,
+                    notes: 'Solid content but used "leaky bucket" cliché. Good product reasoning.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '6',
+                    useCaseId: '1',
+                    dimensionScores: { 'Style/Tone': 3, 'Instruction Adherence': 2 },
+                    finalScore: 5.0,
+                    notes: 'Used bullet structure and "doubling down" cliché. Weaker reasoning.',
+                    testedAt: new Date().toISOString()
+                },
+
                 // CODING (Neural Network) - Use Case ID: 3
                 {
                     id: crypto.randomUUID(),
@@ -352,8 +434,27 @@
                 // Save to localStorage
                 localStorage.setItem('ai-tracker-scores', JSON.stringify(allScores));
 
+                // Also update the use cases to include the new prompt
+                const storedUseCases = localStorage.getItem('ai-tracker-usecases');
+                if (storedUseCases) {
+                    const useCases = JSON.parse(storedUseCases);
+                    const writingUseCase = useCases.find(uc => uc.id === '1');
+                    if (writingUseCase) {
+                        writingUseCase.name = 'Product Strategy Memo';
+                        writingUseCase.prompt = `You are a Senior Product Manager writing a strategy memo for the executive team.
+
+Context: Product: A subscription-based B2B SaaS platform. Problem: Growth has stalled for 3 consecutive quarters. Constraint: Engineering capacity is fully allocated for the next 2 quarters. Risk: A major enterprise customer represents 18% of ARR and has threatened to churn.
+
+Task: Write a one-page product strategy memo that: Clearly states a point of view on what should be done next (do not hedge). Explains why this is the right decision now, using product reasoning rather than market buzzwords. Explicitly rejects at least one tempting alternative strategy and explains why it is wrong. Aligns short-term actions with a long-term product vision.
+
+Writing constraints: Max 350 words. No bullet points. No clichés (e.g. "north star", "low-hanging fruit", "move the needle"). Do not mention competitors. Tone: Calm, authoritative, and slightly skeptical. Assume the audience is experienced and impatient.`;
+                        writingUseCase.evaluationCriteria = "Clarity of reasoning matters more than optimism. Check: word count ≤350, no bullets, no clichés, clear POV, rejects alternative, product reasoning.";
+                        localStorage.setItem('ai-tracker-usecases', JSON.stringify(useCases));
+                    }
+                }
+
                 // Show success message
-                document.getElementById('status').innerHTML = '<div class="success">All 18 scores imported successfully! Close this window and refresh the app to see the results.</div>';
+                document.getElementById('status').innerHTML = '<div class="success">All 24 scores imported successfully! Close this window and refresh the app to see the results.</div>';
                 document.getElementById('addBtn').disabled = true;
                 document.getElementById('addBtn').textContent = 'Scores Imported!';
 
