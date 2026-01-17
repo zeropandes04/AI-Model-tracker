@@ -88,7 +88,7 @@
 <body>
     <div class="container">
         <h1>Import All Test Scores</h1>
-        <p>This will import all test scores into the AI Model Tracker app (24 total scores across 4 categories).</p>
+        <p>This will import all test scores into the AI Model Tracker app (30 total scores across 5 categories).</p>
 
         <h2>Writing & Tone (Product Strategy Memo)</h2>
         <div class="result-item">
@@ -114,6 +114,32 @@
         <div class="result-item">
             <span class="model-name">Llama (via Meta.ai)</span>
             <span class="score medium">5.0/10</span>
+        </div>
+
+        <h2>Reasoning & Logic (Sleeping Wolf Riddle)</h2>
+        <div class="result-item">
+            <span class="model-name">Claude (Sonnet 4.5 free)</span>
+            <span class="score high">10.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">DeepSeek (V3/R1 free)</span>
+            <span class="score high">10.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Gemini 2.5 Flash</span>
+            <span class="score high">9.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Grok 2 (free with X)</span>
+            <span class="score high">9.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">ChatGPT (GPT-4o free)</span>
+            <span class="score low">4.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Llama (via Meta.ai)</span>
+            <span class="score low">3.0/10</span>
         </div>
 
         <h2>Coding (Neural Network)</h2>
@@ -142,30 +168,30 @@
             <span class="score high">8.0/10</span>
         </div>
 
-        <h2>Research & Current Info</h2>
+        <h2>Research & Current Info (Recent AI News)</h2>
         <div class="result-item">
             <span class="model-name">ChatGPT (GPT-4o free)</span>
+            <span class="score high">9.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Claude (Sonnet 4.5 free)</span>
             <span class="score high">8.0/10</span>
+        </div>
+        <div class="result-item">
+            <span class="model-name">Grok 2 (free with X)</span>
+            <span class="score medium">7.0/10</span>
         </div>
         <div class="result-item">
             <span class="model-name">DeepSeek (V3/R1 free)</span>
             <span class="score medium">7.0/10</span>
         </div>
         <div class="result-item">
-            <span class="model-name">Claude (Sonnet 4.5 free)</span>
+            <span class="model-name">Gemini 2.5 Flash</span>
             <span class="score medium">6.0/10</span>
         </div>
         <div class="result-item">
             <span class="model-name">Llama (via Meta.ai)</span>
-            <span class="score medium">6.0/10</span>
-        </div>
-        <div class="result-item">
-            <span class="model-name">Gemini 2.5 Flash</span>
-            <span class="score low">4.0/10</span>
-        </div>
-        <div class="result-item">
-            <span class="model-name">Grok 2 (free with X)</span>
-            <span class="score low">4.0/10</span>
+            <span class="score low">3.0/10</span>
         </div>
 
         <h2>Instruction Following</h2>
@@ -194,7 +220,7 @@
             <span class="score low">2.0/10</span>
         </div>
 
-        <button id="addBtn" onclick="importScores()">Import All 24 Scores</button>
+        <button id="addBtn" onclick="importScores()">Import All 30 Scores</button>
         <div id="status"></div>
     </div>
 
@@ -261,6 +287,62 @@
                     testedAt: new Date().toISOString()
                 },
 
+                // REASONING & LOGIC (Sleeping Wolf Riddle) - Use Case ID: 2
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '1',
+                    useCaseId: '2',
+                    dimensionScores: { 'Reasoning': 2, 'Accuracy': 2 },
+                    finalScore: 4.0,
+                    notes: 'Wrong conclusion. Overcomplicated analysis led to incorrect answer that no guaranteed solution exists.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '2',
+                    useCaseId: '2',
+                    dimensionScores: { 'Reasoning': 5, 'Accuracy': 5 },
+                    finalScore: 10.0,
+                    notes: 'Best structured proof. Correct answer with clear state trace showing wolf sleep is irrelevant to standard solution.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '3',
+                    useCaseId: '2',
+                    dimensionScores: { 'Reasoning': 4, 'Accuracy': 5 },
+                    finalScore: 9.0,
+                    notes: 'Correct reasoning - standard solution works because it never leaves wolf and goat alone.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '4',
+                    useCaseId: '2',
+                    dimensionScores: { 'Reasoning': 5, 'Accuracy': 5 },
+                    finalScore: 10.0,
+                    notes: 'Excellent key insight: any safe deterministic strategy under normal rules is safe here too.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '5',
+                    useCaseId: '2',
+                    dimensionScores: { 'Reasoning': 4, 'Accuracy': 5 },
+                    finalScore: 9.0,
+                    notes: 'Clear and correct. Demonstrated standard solution never leaves wolf and goat unsupervised.',
+                    testedAt: new Date().toISOString()
+                },
+                {
+                    id: crypto.randomUUID(),
+                    modelId: '6',
+                    useCaseId: '2',
+                    dimensionScores: { 'Reasoning': 2, 'Accuracy': 1 },
+                    finalScore: 3.0,
+                    notes: 'Confused analysis with errors. Wrong conclusion that no guaranteed solution exists.',
+                    testedAt: new Date().toISOString()
+                },
+
                 // CODING (Neural Network) - Use Case ID: 3
                 {
                     id: crypto.randomUUID(),
@@ -317,32 +399,32 @@
                     testedAt: new Date().toISOString()
                 },
 
-                // RESEARCH & CURRENT INFO - Use Case ID: 4
+                // RESEARCH & CURRENT INFO (Recent AI News) - Use Case ID: 4
                 {
                     id: crypto.randomUUID(),
                     modelId: '1',
                     useCaseId: '4',
-                    dimensionScores: { 'Accuracy': 4, 'Hallucination (inverse)': 4 },
-                    finalScore: 8.0,
-                    notes: 'Pharma AI, French defence startup, FDA/EMA guidelines. Attributes to Reuters sources.',
+                    dimensionScores: { 'Accuracy': 5, 'Hallucination (inverse)': 4 },
+                    finalScore: 9.0,
+                    notes: 'Best sourcing with actual Reuters/FT URLs. AstraZeneca-Modella AI, Eden gene editing model, FDA-EMA AI principles. Transparent about exclusions.',
                     testedAt: new Date().toISOString()
                 },
                 {
                     id: crypto.randomUUID(),
                     modelId: '2',
                     useCaseId: '4',
-                    dimensionScores: { 'Accuracy': 3, 'Hallucination (inverse)': 3 },
-                    finalScore: 6.0,
-                    notes: 'Atlas robot at Hyundai, DeepSeek R1 docs, Samsung AI deployment. Specific but unverifiable.',
+                    dimensionScores: { 'Accuracy': 4, 'Hallucination (inverse)': 4 },
+                    finalScore: 8.0,
+                    notes: 'Quality over quantity - only 2 items but acknowledged limits. OpenAI-Cerebras partnership, CytoDiffusion blood analysis. Excellent epistemic honesty.',
                     testedAt: new Date().toISOString()
                 },
                 {
                     id: crypto.randomUUID(),
                     modelId: '3',
                     useCaseId: '4',
-                    dimensionScores: { 'Accuracy': 2, 'Hallucination (inverse)': 2 },
-                    finalScore: 4.0,
-                    notes: 'Apple-Google Gemini partnership, Trump AI executive order. Bold claims appear fabricated.',
+                    dimensionScores: { 'Accuracy': 3, 'Hallucination (inverse)': 3 },
+                    finalScore: 6.0,
+                    notes: 'Vague sources (preprints, institutional blogs). Hybrid AI ecosystems, IMF labor analysis, governance research. Hard to verify without URLs.',
                     testedAt: new Date().toISOString()
                 },
                 {
@@ -351,25 +433,25 @@
                     useCaseId: '4',
                     dimensionScores: { 'Accuracy': 3, 'Hallucination (inverse)': 4 },
                     finalScore: 7.0,
-                    notes: 'AlphaFold 3, OpenAI voice model, Windows Recall. References real products but timing unclear.',
+                    notes: 'Honest refusal due to knowledge cutoff. Zero items returned but perfect epistemic integrity. Provided alternative resources.',
                     testedAt: new Date().toISOString()
                 },
                 {
                     id: crypto.randomUUID(),
                     modelId: '5',
                     useCaseId: '4',
-                    dimensionScores: { 'Accuracy': 2, 'Hallucination (inverse)': 2 },
-                    finalScore: 4.0,
-                    notes: 'NVIDIA Vera Rubin (made up), ChatGPT Health, DeepMind-Boston Dynamics. Fabricated products.',
+                    dimensionScores: { 'Accuracy': 4, 'Hallucination (inverse)': 3 },
+                    finalScore: 7.0,
+                    notes: 'OpenAI-Cerebras matches other reports. TSMC investment plausible. OpenAI ads claim suspicious. No URLs provided.',
                     testedAt: new Date().toISOString()
                 },
                 {
                     id: crypto.randomUUID(),
                     modelId: '6',
                     useCaseId: '4',
-                    dimensionScores: { 'Accuracy': 3, 'Hallucination (inverse)': 3 },
-                    finalScore: 6.0,
-                    notes: 'Pharma AI, Samsung AI Promoter, Claude Cowork. Mix of credible and questionable items.',
+                    dimensionScores: { 'Accuracy': 2, 'Hallucination (inverse)': 1 },
+                    finalScore: 3.0,
+                    notes: 'Major temporal confusion - dates from 2025 instead of 2026. Only 2 items. Operator and Stargate references from wrong year.',
                     testedAt: new Date().toISOString()
                 },
 
@@ -454,7 +536,7 @@ Writing constraints: Max 350 words. No bullet points. No clichés (e.g. "north s
                 }
 
                 // Show success message
-                document.getElementById('status').innerHTML = '<div class="success">All 24 scores imported successfully! Close this window and refresh the app to see the results.</div>';
+                document.getElementById('status').innerHTML = '<div class="success">All 30 scores imported successfully! Close this window and refresh the app to see the results.</div>';
                 document.getElementById('addBtn').disabled = true;
                 document.getElementById('addBtn').textContent = 'Scores Imported!';
 
