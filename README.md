@@ -1,90 +1,69 @@
 # AI Model Comparison Tracker
 
-A simple, standalone HTML5 application for comparing AI model performance across different categories using validation dimensions and star ratings.
+A React + TypeScript application for comparing AI model performance across different test categories using star ratings and detailed scoring.
+
+**Live Demo:** https://zeropandes04.github.io/AI-Model-tracker/
 
 ## Features
 
-### Two Main Views
+### Three Main Views
 
-#### 1. Best By Category (Dashboard)
-- Read-only dashboard showing scorecards for each category
-- Displays the winning model (highest final score) per category
-- Shows star ratings (1-5) for each validation dimension
-- Displays final score out of 10 (calculated from star ratings)
+#### 1. Models
+- Grid of AI model cards with overall scores
+- Click any model to see detailed performance breakdown by category
+- Visual star ratings for each test
 
-#### 2. Categories
-- List of all test categories
-- Click any category to view detailed results
-- Add new custom categories with test prompts
-- Manage model results within each category
+#### 2. Leaderboard
+- Ranked table of all models by average score
+- Hover on scores to see category-specific details
+- Quick comparison across all categories
 
-### Validation Dimensions by Category
+#### 3. Test Lab
+- Browse test categories and use cases
+- Copy prompts to test models
+- Record scores with star ratings (1-5 stars → 10-point scale)
+- Add custom categories and use cases
 
-Each category uses specific validation dimensions:
+### Test Categories
 
-- **Writing & Tone**: Style/Tone, Instruction Adherence
-- **Reasoning & Logic**: Reasoning, Accuracy
-- **Coding**: Accuracy, Instruction Adherence
-- **Research & Current Info**: Accuracy, Hallucination (inverse)
-- **Instruction Following**: Instruction Adherence
+| Category | Dimensions | Use Case |
+|----------|------------|----------|
+| Writing & Tone | Style/Tone, Instruction Adherence | Product Strategy Memo |
+| Reasoning & Logic | Reasoning, Accuracy | Sleeping Wolf Riddle |
+| Coding | Accuracy, Instruction Adherence | Neural Network from Scratch |
+| Research & Current Info | Accuracy, Hallucination (inverse) | Recent AI News |
+| Instruction Following | Instruction Adherence | Complex Constrained Sentences |
 
-### Pre-loaded Content
-
-#### Default Categories with Test Prompts:
-1. **Writing & Tone** - Email writing test
-2. **Reasoning & Logic** - Classic river crossing puzzle with twist
-3. **Coding** - Python number guessing game
-4. **Research & Current Info** - Recent AI news
-5. **Instruction Following** - Constrained poetry writing
-
-#### Available Models:
+### Pre-loaded Models
 - ChatGPT (GPT-4o free)
 - Claude (Sonnet 4.5 free)
-- Gemini (1.5 Flash free)
+- Gemini (2.5 Flash free)
 - DeepSeek (V3/R1 free)
 - Grok 2 (free with X)
 - Llama (via Meta.ai)
 
-## How to Use
+## Tech Stack
 
-1. **Open the app**: Simply open `index.html` in any modern web browser
-2. **View best models**: Start on the "Best By Category" tab to see top performers
-3. **Add results**:
-   - Go to "Categories" tab
-   - Click on a category
-   - Click "Copy Prompt" to get the test prompt
-   - Test a model with the prompt
-   - Click "Add Model" to record results
-   - Rate each validation dimension with 1-5 stars
-   - Final score is calculated automatically
-4. **Edit/Delete**: Update or remove model results as needed
-5. **Add categories**: Create custom categories with your own test prompts
+- **Framework:** React 18 + TypeScript
+- **Styling:** Tailwind CSS v4
+- **Build:** Vite
+- **Storage:** LocalStorage (Supabase-ready hooks)
+- **Deployment:** GitHub Pages
 
-## Technical Details
+## Development
 
-- **Technology**: Pure HTML5, CSS3, and vanilla JavaScript
-- **Storage**: LocalStorage (data persists in browser)
-- **No dependencies**: No frameworks, no build process, no server required
-- **Responsive**: Works on desktop and mobile browsers
-- **Dark theme**: Modern UI with dark color scheme
+```bash
+cd ai-tracker-v2
+npm install
+npm run dev
+```
 
 ## Scoring System
 
 - Rate each dimension: 1-5 stars
-- Final score = (Average of star ratings × 2)
-- Final score shown as: X/10
-- Winner = Highest final score in category
+- Final score = Average stars × 2 (out of 10)
+- Overall model score = Average across all categories
 
-## Data Storage
+## Data
 
-All data is stored locally in your browser's localStorage. To reset the app, clear your browser's localStorage for this page.
-
-## Browser Compatibility
-
-Works in all modern browsers that support:
-- ES6 JavaScript
-- CSS Grid
-- LocalStorage API
-- Flexbox
-
-Tested on: Chrome, Firefox, Safari, Edge
+All data persists in browser localStorage. Visit `/add-scores.html` to import pre-scored test results.
